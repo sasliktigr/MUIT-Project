@@ -23,6 +23,7 @@ function closeRegister() {
     document.getElementById("registerModal").style.display = "none";
 }
 
+// клик вне зоны = закрытие
 window.onclick = function(event) {
     const loginModal = document.getElementById("loginModal");
     const registerModal = document.getElementById("registerModal");
@@ -33,7 +34,7 @@ window.onclick = function(event) {
         registerModal.style.display = "none";
     }
 };
-
+// пароль регистрация
 function validatePasswords() {
     const password = document.getElementById("register-password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;

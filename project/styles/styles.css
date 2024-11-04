@@ -21,7 +21,7 @@ section {
     max-width: 800px;
 }
 
-h2, p, li {
+h2, h3, p, li {
     color: #ffffff;
 }
 
@@ -67,7 +67,7 @@ footer {
     width: 200px;
 }
 
-/* Иконка пользователя */
+/* иконка*/
 .icon-container {
     position: absolute;
     top: 20px;
@@ -81,7 +81,6 @@ footer {
 }
 
 
-/* Выпадающее меню */
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -133,7 +132,7 @@ footer {
     font-size: 24px;
 }
 
-/* Стили формы */
+
 .login-form input {
     width: 250px;
     padding: 10px;
@@ -166,3 +165,4 @@ footer {
     border-radius: 5px;
     cursor: pointer;
 }
+
