@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayFi</title>
+    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <script type="text/javascript">
+        var map;
+
+        DG.then(function () {
+            map = DG.map('map', {
+                center: [43.235276, 76.909507],
+                zoom: 13
+            });
+
+            DG.marker([43.235276, 76.909507]).addTo(map).bindPopup('Вы кликнули по мне!');
+        });
+    </script>
+    <style>
+        /* CSS стили */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #2f1634;
+        }
+
+        header {
+            background-color: #4a1d53;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        section {
+            padding: 20px;
+            margin: 10px auto;
+            max-width: 800px;
+        }
+
+        h2 {
+            color: #ffffff;
+        }
+
+        p {
+            color: #ffffff;
+        }
+
+        li {
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .contactP {
+            text-align: left;
+            margin-left: 20px;
+        }
+        .logotype {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 100px;
+        }
+
+        map {
+            position: absolute;
+            top: 20px;
+        }
+
+        .place-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 200px;
+        }
+        
+        /* Основной стиль для контейнера с иконкой */
+        .icon-container {
+            position: absolute; /* Фиксируем иконку в одном месте */
+            top: 20px;       /* Отступ сверху */
+            right: 20px;     /* Отступ справа */
+            z-index: 1000;   /* Поверх всех элементов */
+        }
+
+        /* Стиль иконки пользователя */
+        .user-icon {
+            width: 40px;
+            cursor: pointer;
+        }
+
+        /* Выпадающее меню */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .dropdown-menu a {
+            color: black;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #000000;
+            padding: 20px;
+            width: 200px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+                /* Базовые стили формы */
+        .registration-form {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f4f4f4;
+        }
+
+        .registration-form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <h1>PayFi</h1>
+        <p>Подключайтесь к городским точкам Wi-Fi и наслаждайтесь интернетом в любом месте!</p>
+        <img class="logotype" src="source/logotype.png">
+
+    <!-- Иконка пользователя -->
+        <div class="icon-container">
+            <img src="source/user-icon.png" alt="User Icon" class="user-icon" onclick="toggleMenu()">
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#" onclick="openLogin()">Войти</a>
+                <a href="#" onclick="openRegister()">Регистрация</a>
+            </div>
+        </div>
+
+        <!-- Модальное окно для входа -->
+        <div class="modal" id="loginModal">
+            <div class="modal-content">
+                <span class="close" onclick="closeLogin()">&times;</span>
+                <h2>Вход</h2>
+                <form>
+                    <label for="username">Логин:</label>
+                    <input type="text" id="username" name="username" required>
+                    
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                    
+                    <button type="submit">Войти</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Модальное окно для регистрации -->
+        <div class="registration-form">
+            <h2>Регистрация</h2>
+            <form id="registrationForm" onsubmit="return validatePasswords()">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" required>
+    
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" required>
+    
+                <label for="confirmPassword">Подтвердите пароль:</label>
+                <input type="password" id="confirmPassword" required>
+    
+                <span id="error-message" class="error-message"></span>
+    
+                <button type="submit" class="submit-button">Зарегистрироваться</button>
+            </form>
+        </div>
+
+    </header>
+
+    <!-- О сервисе -->
+    <section id="about">
+        <h2>О нашем сервисе</h2>
+        <p>Мы предоставляем удобный доступ к Wi-Fi по всему городу. Найдите ближайшую точку доступа, подключитесь и оплатите удобным способом.</p>
+
+    </section>
+
+    <!-- Блок подключения -->
+    <section id="connect">
+        <h2>Как подключиться</h2>
+        <ol>
+            <li>Выберите ближайшую точку Wi-Fi.</li>
+            <li>Подключитесь и войдите в личный кабинет.</li>
+            <li>Оплатите доступ, чтобы получить стабильное подключение.</li>
+        </ol>
+        <button onclick="connectToWiFi()">Найти точку доступа</button>
+        <div id="map" style="width:500px; height:400px"></div>
+    </section>
+
+    <!-- Блок тарифов -->
+    <section id="pricing">
+        <h2>Тарифы</h2>
+        <p>Выберите удобный тарифный план и платите только за время, проведенное в сети.</p>
+        <ul>
+            <li>1 час — 500 тенге</li>
+            <li>3 часа — 1750 тенге</li>
+            <li>24 часа — 9450 тенге</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Подключение</h2>
+        <div class="place-card">
+            <h3>Тариф на час</h3>
+            <p>В данном тарифе предоставляем безлимитный интернет на час времени!</p>
+            
+        </div>
+    </section>
+
+    <!-- Блок контактов -->
+    <footer>
+        <p class="contactP">Свяжитесь с нами: support@citywifi.ru</p>
+        <p class="contactP">Телефон: +7 (123) 456-7890</p>
+    </footer>
+
+    <script>
+        // JavaScript функция
+        function connectToWiFi() {
+            alert("Функция подключения к Wi-Fi пока в разработке!");
+        }
+
+        // Показать/скрыть выпадающее меню
+        function toggleMenu() {
+            const menu = document.getElementById("dropdownMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+
+        // Открыть окно входа
+        function openLogin() {
+            document.getElementById("loginModal").style.display = "flex";
+            document.getElementById("dropdownMenu").style.display = "none"; // скрыть меню при открытии модального окна
+        }
+
+        // Открыть окно регистрации
+        function openRegister() {
+            document.getElementById("registrationForm").style.display = "flex";
+            document.getElementById("dropdownMenu").style.display = "none"; // скрыть меню при открытии модального окна
+        }
+
+        // Закрыть окно входа
+        function closeLogin() {
+            document.getElementById("loginModal").style.display = "none";
+        }
+
+        // Закрыть окно регистрации
+        function closeRegister() {
+            document.getElementById("registrationForm").style.display = "none";
+        }
+
+        // Закрытие модального окна при клике за его пределами
+        window.onclick = function(event) {
+            const loginModal = document.getElementById("loginModal");
+            const registerModal = document.getElementById("registrationForm");
+            if (event.target == loginModal) {
+                loginModal.style.display = "none";
+            }
+            if (event.target == registerModal) {
+                registerModal.style.display = "none";
+            }
+        };
+
+        function validatePasswords() {
+            // Получаем значения из полей ввода
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const errorMessage = document.getElementById("error-message");
+
+            // Проверяем, совпадают ли пароли
+            if (password !== confirmPassword) {
+                errorMessage.textContent = "Пароли не совпадают.";
+                return false; // Не отправлять форму
+            }
+
+            errorMessage.textContent = ""; // Убираем сообщение об ошибке, если пароли совпадают
+            return true; // Разрешаем отправку формы
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayFi</title>
+    <link rel="stylesheet" type="text/CSS" href="styles/styles.css">
+    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <script type="text/javascript">
+        var map;
+
+        DG.then(function () {
+            map = DG.map('map', {
+                center: [43.235276, 76.909507],
+                zoom: 13
+            });
+
+            DG.marker([43.235276, 76.909507]).addTo(map).bindPopup('Вы кликнули по мне!');
+        });
+    </script>
+    <style>
+        
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <h1>PayFi</h1>
+        <p>Подключайтесь к городским точкам Wi-Fi и наслаждайтесь интернетом в любом месте!</p>
+        <img class="logotype" src="source/logotype.png">
+
+        <!-- Иконка пользователя -->
+        <div class="icon-container">
+            <img src="source/user-icon.png" alt="User Icon" class="user-icon" onclick="toggleMenu()">
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#" onclick="openLogin()">Войти</a>
+                <a href="#" onclick="openRegister()">Регистрация</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Модальное окно для входа -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogin()">&times;</span>
+            <h2>Вход</h2>
+            <form class="login-form">
+                <label for="login-username">Логин:</label>
+                <input type="text" id="login-username" name="username" required>
+                
+                <label for="login-password">Пароль:</label>
+                <input type="password" id="login-password" name="password" required>
+                
+                <button type="submit" class="submit-button">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно для регистрации -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRegister()">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="registrationForm" class="registration-form" onsubmit="return validatePasswords()">
+                <label for="register-username">Имя пользователя:</label>
+                <input type="text" id="register-username" required>
+    
+                <label for="register-password">Пароль:</label>
+                <input type="password" id="register-password" required>
+    
+                <label for="confirmPassword">Подтвердите пароль:</label>
+                <input type="password" id="confirmPassword" required>
+    
+                <span id="error-message" class="error-message"></span>
+    
+                <button type="submit" class="submit-button">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- О сервисе -->
+    <section id="about">
+        <h2>О нашем сервисе</h2>
+        <p>Мы предоставляем удобный доступ к Wi-Fi по всему городу. Найдите ближайшую точку доступа, подключитесь и оплатите удобным способом.</p>    
+    </section> 
+       
+    <!-- Блок подключения -->
+    <section id="connect">
+        <h2>Как подключиться</h2>
+        <ol>
+            <li>Выберите ближайшую точку Wi-Fi.</li>
+            <li>Подключитесь и войдите в личный кабинет.</li>
+            <li>Оплатите доступ, чтобы получить стабильное подключение.</li>
+        </ol>
+        <div id="map" style="width:500px; height:400px"></div>
+    </section>   
+
+    <!-- Блок тарифов -->
+    <section id="pricing">
+        <h2>Тарифы</h2>
+        <p>Выберите удобный тарифный план и платите только за время, проведенное в сети.</p>
+        <ul>
+            <li>1 час — 500 тенге</li>
+            <li>3 часа — 1750 тенге</li>
+            <li>24 часа — 9450 тенге</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Подключение</h2>
+        <div class="place-card">
+            <h3>Тариф на час</h3>
+            <p>В данном тарифе предоставляем безлимитный интернет на час времени!</p>
+            <button onclick="connectToWiFi()">Подключить</button>                
+        </div>
+    </section>   
+
+    <!-- Блок контактов -->
+    <footer>
+        <p class="contactP">Свяжитесь с нами: support@citywifi.ru</p>
+        <p class="contactP">Телефон: +7 (123) 456-7890</p>
+    </footer>    
+
+    <!-- JavaScript -->
+    <script src="scripts/scripts.js"></script>
+</body>
+</html>
